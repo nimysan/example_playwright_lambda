@@ -1,0 +1,10 @@
+{
+  "name": "playwright-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function with Playwright for web scraping and screenshots",
+  "main": "lambda_function.js",
+  "dependencies": {
+    "playwright": "^1.40.0",
+    "aws-sdk": "^2.1499.0"
+  }
+}
