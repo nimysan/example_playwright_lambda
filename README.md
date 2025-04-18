@@ -98,3 +98,14 @@ This image configuration avoids manual installation of system-level dependencies
 ## Conclusion
 
 Using Playwright with AWS Lambda enables efficient, serverless web scraping. By packaging the function in a Docker container, we ensure that all dependencies are compatible with Lambda. This project serves as a scalable solution for periodic scraping tasks where traditional servers are too costly or inefficient.
+
+
+其他一起技巧
+
+本地
+
+```
+
+docker run -it --entrypoint /bin/bash 390468416359.dkr.ecr.us-east-1.amazonaws.com/container-playwright:latest
+
+```

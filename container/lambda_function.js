@@ -32,7 +32,7 @@ async function downloadPageContent(url) {
     console.log('/var/task/node_modules contents:', fs.readdirSync('/var/task/node_modules'));
     
     // 设置浏览器路径
-    const executablePath = '/var/task/node_modules/playwright-core/.local-browsers/chromium-1169/chrome-linux/chrome';
+    const executablePath = '/root/.cache/ms-playwright/chromium-1169/chrome-linux/chrome';
     console.log('Attempting to use browser at:', executablePath);
     
     // 验证浏览器文件是否存在
