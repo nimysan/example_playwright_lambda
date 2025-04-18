@@ -17,7 +17,7 @@ PAYLOAD=$(cat << EOF
 {
     "url": "${URL}",
     "bucket": "${S3_BUCKET}",
-    "output_key": "${OUTPUT_KEY}"
+    "outputKey": "${OUTPUT_KEY}"
 }
 EOF
 )
