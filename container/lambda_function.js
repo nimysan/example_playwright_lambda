@@ -21,8 +21,38 @@ async function scrollToBottom(page) {
 }
 
 async function downloadPageContent(url) {
+    console.log('Starting downloadPageContent...');
+    console.log('LAMBDA_TASK_ROOT:', process.env.LAMBDA_TASK_ROOT);
+    console.log('Current working directory:', process.cwd());
+    
+    // 检查目录内容
+    const fs = require('fs');
+    console.log('Current directory contents:', fs.readdirSync(process.cwd()));
+    console.log('/var/task contents:', fs.readdirSync('/var/task'));
+    console.log('/var/task/node_modules contents:', fs.readdirSync('/var/task/node_modules'));
+    
+    // 设置浏览器路径
+    const executablePath = '/var/task/node_modules/playwright-core/.local-browsers/chromium-1169/chrome-linux/chrome';
+    console.log('Attempting to use browser at:', executablePath);
+    
+    // 验证浏览器文件是否存在
+    try {
+        if (fs.existsSync(executablePath)) {
+            console.log('Chrome executable exists');
+            console.log('File permissions:', fs.statSync(executablePath).mode.toString(8));
+        } else {
+            console.log('Chrome executable not found');
+            console.log('Checking alternative locations...');
+            console.log('/root/.cache/ms-playwright contents:', fs.readdirSync('/root/.cache/ms-playwright'));
+        }
+    } catch (e) {
+        console.log('Error checking chrome executable:', e);
+    }
+    
+    console.log('Launching browser...');
     const browser = await playwright.chromium.launch({
         headless: true,
+        executablePath,
         args: [
             '--disable-gpu',
             '--no-sandbox',
