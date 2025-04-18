@@ -132,7 +132,7 @@ Lambda 环境中的 Chromium 路径需要特别注意：
 
 要在本地测试容器：
 ```bash
-docker run -it --entrypoint /bin/bash 390468416359.dkr.ecr.us-east-1.amazonaws.com/container-playwright:latest
+docker run -it --entrypoint /bin/bash $image_url
 ```
 
 示例测试事件：
