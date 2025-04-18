@@ -48,12 +48,15 @@ RUN npx playwright install chromium \
     && mkdir -p /var/task/node_modules/playwright-core/.local-browsers \
     && mkdir -p /root/.cache/ms-playwright \
     && chmod -R 777 /root/.cache/ms-playwright \
-    && npx playwright install chromium \
-    && chmod -R 777 /var/task/node_modules/playwright-core/.local-browsers || true
+    && npx playwright install chromium
+
+# 将Chromium从缓存目录复制到/var/task目录
+RUN cp -r /root/.cache/ms-playwright/chromium-1169 /var/task/node_modules/playwright-core/.local-browsers/ \
+    && chmod -R 777 /var/task/node_modules/playwright-core/.local-browsers
 
 # 验证浏览器安装位置和权限
-RUN ls -la /var/task/node_modules/playwright-core/.local-browsers || true \
-    && ls -la /root/.cache/ms-playwright || true
+RUN ls -la /var/task/node_modules/playwright-core/.local-browsers/chromium-1169/chrome-linux/ \
+    && ls -la /root/.cache/ms-playwright/chromium-1169/chrome-linux/
 
 # Lambda函数处理器
 CMD [ "lambda_function.handler" ]

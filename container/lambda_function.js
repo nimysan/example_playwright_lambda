@@ -32,21 +32,34 @@ async function downloadPageContent(url) {
     console.log('/var/task/node_modules contents:', fs.readdirSync('/var/task/node_modules'));
     
     // 设置浏览器路径
-    const executablePath = '/root/.cache/ms-playwright/chromium-1169/chrome-linux/chrome';
+    const executablePath = '/var/task/node_modules/playwright-core/.local-browsers/chromium-1169/chrome-linux/chrome';
     console.log('Attempting to use browser at:', executablePath);
     
     // 验证浏览器文件是否存在
     try {
         if (fs.existsSync(executablePath)) {
-            console.log('Chrome executable exists');
+            console.log('Chrome executable exists at primary location');
             console.log('File permissions:', fs.statSync(executablePath).mode.toString(8));
         } else {
-            console.log('Chrome executable not found');
-            console.log('Checking alternative locations...');
-            console.log('/root/.cache/ms-playwright contents:', fs.readdirSync('/root/.cache/ms-playwright'));
+            console.error('Chrome executable not found at primary location');
+            // 检查备用位置
+            const fallbackPath = '/root/.cache/ms-playwright/chromium-1169/chrome-linux/chrome';
+            if (fs.existsSync(fallbackPath)) {
+                console.log('Chrome executable found at fallback location');
+                console.log('Attempting to copy to primary location...');
+                // 确保目标目录存在
+                fs.mkdirSync('/var/task/node_modules/playwright-core/.local-browsers/chromium-1169/chrome-linux', { recursive: true });
+                // 复制文件
+                fs.copyFileSync(fallbackPath, executablePath);
+                fs.chmodSync(executablePath, '777');
+                console.log('Successfully copied Chrome executable to primary location');
+            } else {
+                throw new Error('Chrome executable not found in any location');
+            }
         }
     } catch (e) {
-        console.log('Error checking chrome executable:', e);
+        console.error('Error with Chrome executable:', e);
+        throw e;
     }
     
     console.log('Launching browser...');
